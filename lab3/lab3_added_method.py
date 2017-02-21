@@ -1,4 +1,37 @@
-class Property:
+#Added class Person with 3 additional methods
+#Inharitance supported
+#Created by Roman Vey
+class Person:
+	def __init__(self, person_name='', person_age='', **kwargs):
+		"""
+		Init Property class
+		"""
+		self.person_name = person_name
+		self.person_age = person_age
+
+	def display(self):
+		"""
+		Show info about properties
+		"""
+		print("PERSON INFO")
+		print("================")
+		print("person name: {}".format(self.person_name))
+		print("person age: {}".format(self.person_age))
+		print()
+
+		
+	def prompt_init():
+		"""
+		Input properties
+		"""
+		return dict(person_name=input("Enter person name: "),
+				person_age=input("Enter person age: "))
+	prompt_init = staticmethod(prompt_init)
+
+
+
+
+class Property(Person):
 	def __init__(self, square_feet='', beds='', baths='', **kwargs):
 		"""
 		Init Property class
@@ -12,6 +45,7 @@ class Property:
 		"""
 		Show info about properties
 		"""
+		super().display()
 		print("PROPERTY DETAILS")
 		print("================")
 		print("square footage: {}".format(self.square_feet))
@@ -19,13 +53,22 @@ class Property:
 		print("bathrooms: {}".format(self.num_baths))
 		print()
 
+		
 	def prompt_init():
 		"""
 		Input properties
 		"""
-		return dict(square_feet=input("Enter the square feet: "),
-				beds=input("Enter number of bedrooms: "),
-				baths=input("Enter number of baths: "))
+		parent_init = Person.prompt_init()
+		square_feet=input("Enter the square feet: ")
+		beds=input("Enter number of bedrooms: ")
+		baths=input("Enter number of baths: ")
+		
+		parent_init.update({
+			"square_feet": square_feet,
+			"beds": beds,
+			"baths": baths
+		})
+		return parent_init
 	prompt_init = staticmethod(prompt_init)
 
 def get_valid_input(input_string, valid_options):
@@ -183,6 +226,10 @@ class Rental:
 					("yes", "no")))
 	prompt_init = staticmethod(prompt_init)
 
+	
+	
+	
+	
 class HouseRental(Rental, House):
 	def prompt_init():
 		"""
@@ -258,3 +305,7 @@ class Agent:
 		init_args = PropertyClass.prompt_init()
 		self.property_list.append(PropertyClass(**init_args))
 
+		
+James = Agent()
+James.add_property()
+James.display_properties()

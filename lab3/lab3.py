@@ -1,11 +1,17 @@
 class Property:
 	def __init__(self, square_feet='', beds='', baths='', **kwargs):
+		"""
+		Init Property class
+		"""
 		super().__init__(**kwargs)
 		self.square_feet = square_feet
 		self.num_bedrooms = beds
 		self.num_baths = baths
 
 	def display(self):
+		"""
+		Show info about properties
+		"""
 		print("PROPERTY DETAILS")
 		print("================")
 		print("square footage: {}".format(self.square_feet))
@@ -14,12 +20,20 @@ class Property:
 		print()
 
 	def prompt_init():
+		"""
+		Input properties
+		"""
 		return dict(square_feet=input("Enter the square feet: "),
 				beds=input("Enter number of bedrooms: "),
 				baths=input("Enter number of baths: "))
 	prompt_init = staticmethod(prompt_init)
 
 def get_valid_input(input_string, valid_options):
+	"""
+	(str, list) -> str
+	Input only valid string
+	Return inputted valid string
+	"""
 	input_string += " ({}) ".format((", ".join(valid_options)))
 	response = input(input_string)
 	while response.lower() not in valid_options:
@@ -31,17 +45,26 @@ class Apartment(Property):
 	valid_balconies = ("yes", "no", "solarium") 
 
 	def __init__(self, balcony='', laundry='', **kwargs):
+		"""
+		Init Apartment, after init Property
+		"""
 		super().__init__(**kwargs)
 		self.balcony = balcony
 		self.laundry = laundry
 
 	def display(self):
+		"""
+		Show apartment details
+		"""
 		super().display()
 		print("APARTMENT DETAILS")
 		print("laundry: {}".format(self.laundry))
 		print("has balcony: {}".format(self.balcony))
 
 	def prompt_init():
+		"""
+		Input valid apartment details, static method
+		"""
 		parent_init = Property.prompt_init()
 		laundry = get_valid_input(
 				"What laundry facilities does "
@@ -63,12 +86,18 @@ class House(Property):
 
 	def __init__(self, num_stories='',
 			garage='', fenced='', **kwargs):
+		"""
+		Init House class, after Property class
+		"""
 		super().__init__(**kwargs)
 		self.garage = garage
 		self.fenced = fenced
 		self.num_stories = num_stories
 
 	def display(self):
+		"""
+		Show info about properties, after about house
+		"""
 		super().display()
 		print("HOUSE DETAILS")
 		print("# of stories: {}".format(self.num_stories))
@@ -76,6 +105,9 @@ class House(Property):
 		print("fenced yard: {}".format(self.fenced))
 
 	def prompt_init():
+		"""
+		Input valid house details, static method
+		"""
 		parent_init = Property.prompt_init()
 		fenced = get_valid_input("Is the yard fenced? ",
 					House.valid_fenced)
@@ -92,18 +124,27 @@ class House(Property):
 	prompt_init = staticmethod(prompt_init)
 
 class Purchase:
+	"""
+	Init purchase, (house/apartment), property
+	"""
 	def __init__(self, price='', taxes='', **kwargs):
 		super().__init__(**kwargs)
 		self.price = price
 		self.taxes = taxes
 
 	def display(self):
+		"""
+		Show purchase, (house/apartment), property
+		"""
 		super().display()
 		print("PURCHASE DETAILS")
 		print("selling price: {}".format(self.price))
 		print("estimated taxes: {}".format(self.taxes))
 
 	def prompt_init():
+		"""
+		Input valid purchase
+		"""
 		return dict(
 			price=input("What is the selling price? "),
 			taxes=input("What are the estimated taxes? "))
@@ -112,12 +153,18 @@ class Purchase:
 class Rental:
 	def __init__(self, furnished='', utilities='',
 			rent='', **kwargs):
+		"""
+		Init rental, (house/apartment), property
+		"""
 		super().__init__(**kwargs)
 		self.furnished = furnished
 		self.rent = rent
 		self.utilities = utilities
 
 	def display(self):
+		"""
+		Show purchase, (house/apartment), property
+		"""
 		super().display()
 		print("RENTAL DETAILS")
 		print("rent: {}".format(self.rent))
@@ -126,6 +173,9 @@ class Rental:
 		print("================\n")
 
 	def prompt_init():
+		"""
+		Input valid rental info
+		"""
 		return dict(
 			rent=input("What is the monthly rent? "),
 			utilities=input("What are the estimated utilities? "),
@@ -135,6 +185,9 @@ class Rental:
 
 class HouseRental(Rental, House):
 	def prompt_init():
+		"""
+		Class, which connect Rental and House classes 
+		"""
 		init = House.prompt_init()
 		init.update(Rental.prompt_init())
 		return init
@@ -142,6 +195,9 @@ class HouseRental(Rental, House):
 
 class ApartmentRental(Rental, Apartment):
 	def prompt_init():
+		"""
+		Class, which connect Rental and Apartment classes 
+		"""
 		init = Apartment.prompt_init()
 		init.update(Rental.prompt_init())
 		return init
@@ -149,7 +205,9 @@ class ApartmentRental(Rental, Apartment):
 
 class ApartmentPurchase(Purchase, Apartment):
 	def prompt_init():
-
+		"""
+		Class, which connect Purchase and Apartment classes 
+		"""
 		init = Apartment.prompt_init()
 		init.update(Purchase.prompt_init())
 		return init
@@ -157,7 +215,9 @@ class ApartmentPurchase(Purchase, Apartment):
 
 class HousePurchase(Purchase, House):
 	def prompt_init():
-
+		"""
+		Class, which connect Purchase and House classes 
+		"""
 		init = House.prompt_init()
 		init.update(Purchase.prompt_init())
 		return init
@@ -171,13 +231,22 @@ class Agent:
 		("apartment", "purchase"): ApartmentPurchase
 		}
 	def __init__(self):
+		"""
+		Init Agent class
+		"""
 		self.property_list = []
 
 	def display_properties(self):
+		"""
+		Display all info
+		"""
 		for property in self.property_list:
 			property.display()
 
 	def add_property(self):
+		"""
+		Add properties
+		"""
 		property_type = get_valid_input(
 				"What type of property? ",
 				("house", "apartment")).lower()
