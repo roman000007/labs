@@ -3,7 +3,6 @@ class Property:
 		"""
 		Init Property class
 		"""
-		super().__init__(**kwargs)
 		self.square_feet = square_feet
 		self.num_bedrooms = beds
 		self.num_baths = baths
@@ -48,7 +47,6 @@ class Apartment(Property):
 		"""
 		Init Apartment, after init Property
 		"""
-		super().__init__(**kwargs)
 		self.balcony = balcony
 		self.laundry = laundry
 
@@ -56,7 +54,6 @@ class Apartment(Property):
 		"""
 		Show apartment details
 		"""
-		super().display()
 		print("APARTMENT DETAILS")
 		print("laundry: {}".format(self.laundry))
 		print("has balcony: {}".format(self.balcony))
@@ -89,7 +86,6 @@ class House(Property):
 		"""
 		Init House class, after Property class
 		"""
-		super().__init__(**kwargs)
 		self.garage = garage
 		self.fenced = fenced
 		self.num_stories = num_stories
@@ -98,7 +94,6 @@ class House(Property):
 		"""
 		Show info about properties, after about house
 		"""
-		super().display()
 		print("HOUSE DETAILS")
 		print("# of stories: {}".format(self.num_stories))
 		print("garage: {}".format(self.garage))
@@ -128,7 +123,6 @@ class Purchase:
 	Init purchase, (house/apartment), property
 	"""
 	def __init__(self, price='', taxes='', **kwargs):
-		super().__init__(**kwargs)
 		self.price = price
 		self.taxes = taxes
 
@@ -136,7 +130,6 @@ class Purchase:
 		"""
 		Show purchase, (house/apartment), property
 		"""
-		super().display()
 		print("PURCHASE DETAILS")
 		print("selling price: {}".format(self.price))
 		print("estimated taxes: {}".format(self.taxes))
@@ -156,7 +149,6 @@ class Rental:
 		"""
 		Init rental, (house/apartment), property
 		"""
-		super().__init__(**kwargs)
 		self.furnished = furnished
 		self.rent = rent
 		self.utilities = utilities
@@ -165,7 +157,6 @@ class Rental:
 		"""
 		Show purchase, (house/apartment), property
 		"""
-		super().display()
 		print("RENTAL DETAILS")
 		print("rent: {}".format(self.rent))
 		print("estimated utilities: {}".format(self.utilities))
@@ -183,7 +174,7 @@ class Rental:
 					("yes", "no")))
 	prompt_init = staticmethod(prompt_init)
 
-class HouseRental(Rental, House):
+class HouseRental:
 	def prompt_init():
 		"""
 		Class, which connect Rental and House classes 
@@ -193,7 +184,7 @@ class HouseRental(Rental, House):
 		return init
 	prompt_init = staticmethod(prompt_init)
 
-class ApartmentRental(Rental, Apartment):
+class ApartmentRental:
 	def prompt_init():
 		"""
 		Class, which connect Rental and Apartment classes 
@@ -203,7 +194,9 @@ class ApartmentRental(Rental, Apartment):
 		return init
 	prompt_init = staticmethod(prompt_init)
 
-class ApartmentPurchase(Purchase, Apartment):
+class ApartmentPurchase:
+    def display(self):
+        
 	def prompt_init():
 		"""
 		Class, which connect Purchase and Apartment classes 
@@ -213,7 +206,7 @@ class ApartmentPurchase(Purchase, Apartment):
 		return init
 	prompt_init = staticmethod(prompt_init)
 
-class HousePurchase(Purchase, House):
+class HousePurchase:
 	def prompt_init():
 		"""
 		Class, which connect Purchase and House classes 
