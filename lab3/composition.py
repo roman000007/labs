@@ -175,6 +175,7 @@ class Rental:
 	prompt_init = staticmethod(prompt_init)
 
 class HouseRental:
+<<<<<<< HEAD
 	def display(self):
 		self.prop.display()
 		self.house.display()
@@ -185,6 +186,8 @@ class HouseRental:
 		self.house = House(**kwargs)
 		self.rental = Rental(**kwargs)
 		
+=======
+>>>>>>> origin/master
 	def prompt_init():
 		"""
 		Class, which connect Purchase and House classes 
@@ -196,6 +199,7 @@ class HouseRental:
 	prompt_init = staticmethod(prompt_init)
 
 class ApartmentRental:
+<<<<<<< HEAD
 	def display(self):
 		self.prop.display()
 		self.apartment.display()
@@ -206,6 +210,8 @@ class ApartmentRental:
 		self.apartment = Apartment(**kwargs)
 		self.rental = Rental(**kwargs)
 		
+=======
+>>>>>>> origin/master
 	def prompt_init():
 		"""
 		Class, which connect Purchase and House classes 
@@ -217,6 +223,7 @@ class ApartmentRental:
 	prompt_init = staticmethod(prompt_init)
 
 class ApartmentPurchase:
+<<<<<<< HEAD
 	def display(self):
 		self.prop.display()
 		self.apartment.display()
@@ -231,6 +238,11 @@ class ApartmentPurchase:
 #Created by Roman Vey
 
 		def prompt_init():
+=======
+    def display(self):
+        
+	def prompt_init():
+>>>>>>> origin/master
 		"""
 		Class, which connect Purchase and House classes 
 		"""
@@ -241,6 +253,7 @@ class ApartmentPurchase:
 	prompt_init = staticmethod(prompt_init)
 
 class HousePurchase:
+<<<<<<< HEAD
 	def display(self):
 		self.prop.display()
 		self.house.display()
@@ -251,6 +264,8 @@ class HousePurchase:
 		self.house = House(**kwargs)
 		self.purchase = Purchase(**kwargs)
 		
+=======
+>>>>>>> origin/master
 	def prompt_init():
 		"""
 		Class, which connect Purchase and House classes 
