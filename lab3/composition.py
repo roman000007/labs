@@ -3,7 +3,6 @@ class Property:
 		"""
 		Init Property class
 		"""
-		super().__init__(**kwargs)
 		self.square_feet = square_feet
 		self.num_bedrooms = beds
 		self.num_baths = baths
@@ -40,7 +39,7 @@ def get_valid_input(input_string, valid_options):
 		response = input(input_string)
 	return response
 
-class Apartment(Property):
+class Apartment:
 	valid_laundries = ("coin", "ensuite", "none")
 	valid_balconies = ("yes", "no", "solarium") 
 
@@ -48,7 +47,6 @@ class Apartment(Property):
 		"""
 		Init Apartment, after init Property
 		"""
-		super().__init__(**kwargs)
 		self.balcony = balcony
 		self.laundry = laundry
 
@@ -56,7 +54,6 @@ class Apartment(Property):
 		"""
 		Show apartment details
 		"""
-		super().display()
 		print("APARTMENT DETAILS")
 		print("laundry: {}".format(self.laundry))
 		print("has balcony: {}".format(self.balcony))
@@ -65,7 +62,7 @@ class Apartment(Property):
 		"""
 		Input valid apartment details, static method
 		"""
-		parent_init = Property.prompt_init()
+		parent_init = {}
 		laundry = get_valid_input(
 				"What laundry facilities does "
 				"the property have? ",
@@ -80,7 +77,7 @@ class Apartment(Property):
 		return parent_init
 	prompt_init = staticmethod(prompt_init)
 
-class House(Property):
+class House:
 	valid_garage = ("attached", "detached", "none")
 	valid_fenced = ("yes", "no")
 
@@ -89,7 +86,6 @@ class House(Property):
 		"""
 		Init House class, after Property class
 		"""
-		super().__init__(**kwargs)
 		self.garage = garage
 		self.fenced = fenced
 		self.num_stories = num_stories
@@ -98,7 +94,6 @@ class House(Property):
 		"""
 		Show info about properties, after about house
 		"""
-		super().display()
 		print("HOUSE DETAILS")
 		print("# of stories: {}".format(self.num_stories))
 		print("garage: {}".format(self.garage))
@@ -108,7 +103,7 @@ class House(Property):
 		"""
 		Input valid house details, static method
 		"""
-		parent_init = Property.prompt_init()
+		parent_init = {}
 		fenced = get_valid_input("Is the yard fenced? ",
 					House.valid_fenced)
 		garage = get_valid_input("Is there a garage? ",
@@ -128,7 +123,6 @@ class Purchase:
 	Init purchase, (house/apartment), property
 	"""
 	def __init__(self, price='', taxes='', **kwargs):
-		super().__init__(**kwargs)
 		self.price = price
 		self.taxes = taxes
 
@@ -136,7 +130,6 @@ class Purchase:
 		"""
 		Show purchase, (house/apartment), property
 		"""
-		super().display()
 		print("PURCHASE DETAILS")
 		print("selling price: {}".format(self.price))
 		print("estimated taxes: {}".format(self.taxes))
@@ -156,7 +149,6 @@ class Rental:
 		"""
 		Init rental, (house/apartment), property
 		"""
-		super().__init__(**kwargs)
 		self.furnished = furnished
 		self.rent = rent
 		self.utilities = utilities
@@ -165,7 +157,6 @@ class Rental:
 		"""
 		Show purchase, (house/apartment), property
 		"""
-		super().display()
 		print("RENTAL DETAILS")
 		print("rent: {}".format(self.rent))
 		print("estimated utilities: {}".format(self.utilities))
@@ -183,42 +174,89 @@ class Rental:
 					("yes", "no")))
 	prompt_init = staticmethod(prompt_init)
 
-class HouseRental(Rental, House):
-	def prompt_init():
-		"""
-		Class, which connect Rental and House classes 
-		"""
-		init = House.prompt_init()
-		init.update(Rental.prompt_init())
-		return init
-	prompt_init = staticmethod(prompt_init)
+class HouseRental:
+	def display(self):
+		self.prop.display()
+		self.house.display()
+		self.rental.display()
 
-class ApartmentRental(Rental, Apartment):
-	def prompt_init():
-		"""
-		Class, which connect Rental and Apartment classes 
-		"""
-		init = Apartment.prompt_init()
-		init.update(Rental.prompt_init())
-		return init
-	prompt_init = staticmethod(prompt_init)
-
-class ApartmentPurchase(Purchase, Apartment):
-	def prompt_init():
-		"""
-		Class, which connect Purchase and Apartment classes 
-		"""
-		init = Apartment.prompt_init()
-		init.update(Purchase.prompt_init())
-		return init
-	prompt_init = staticmethod(prompt_init)
-
-class HousePurchase(Purchase, House):
+	def __init__(self, **kwargs):
+		self.prop = Property(**kwargs)
+		self.house = House(**kwargs)
+		self.rental = Rental(**kwargs)
+		
 	def prompt_init():
 		"""
 		Class, which connect Purchase and House classes 
 		"""
-		init = House.prompt_init()
+		init = Property.prompt_init()
+		init.update(House.prompt_init())
+		init.update(Rental.prompt_init())
+		return init
+	prompt_init = staticmethod(prompt_init)
+
+class ApartmentRental:
+	def display(self):
+		self.prop.display()
+		self.apartment.display()
+		self.rental.display()
+
+	def __init__(self, **kwargs):
+		self.prop = Property(**kwargs)
+		self.apartment = Apartment(**kwargs)
+		self.rental = Rental(**kwargs)
+		
+	def prompt_init():
+		"""
+		Class, which connect Purchase and House classes 
+		"""
+		init = Property.prompt_init()
+		init.update(Apartment.prompt_init())
+		init.update(Rental.prompt_init())
+		return init
+	prompt_init = staticmethod(prompt_init)
+
+class ApartmentPurchase:
+	def display(self):
+		self.prop.display()
+		self.apartment.display()
+		self.purchase.display()
+
+	def __init__(self, **kwargs):
+		self.prop = Property(**kwargs)
+		self.apartment = Apartment(**kwargs)
+		self.purchase = Purchase(**kwargs)
+		
+#Classes WITHOUT inheritance
+#Created by Roman Vey
+
+		def prompt_init():
+		"""
+		Class, which connect Purchase and House classes 
+		"""
+		init = Property.prompt_init()
+		init.update(Apartment.prompt_init())
+		init.update(Purchase.prompt_init())
+		return init
+	prompt_init = staticmethod(prompt_init)
+
+class HousePurchase:
+	def display(self):
+		self.prop.display()
+		self.house.display()
+		self.purchase.display()
+
+	def __init__(self, **kwargs):
+		self.prop = Property(**kwargs)
+		self.house = House(**kwargs)
+		self.purchase = Purchase(**kwargs)
+		
+	def prompt_init():
+		"""
+		Class, which connect Purchase and House classes 
+		"""
+		init = Property.prompt_init()
+		init.update(House.prompt_init())
 		init.update(Purchase.prompt_init())
 		return init
 	prompt_init = staticmethod(prompt_init)
@@ -258,3 +296,6 @@ class Agent:
 		init_args = PropertyClass.prompt_init()
 		self.property_list.append(PropertyClass(**init_args))
 
+#a = Agent()
+#a.add_property()
+#a.display_properties()
