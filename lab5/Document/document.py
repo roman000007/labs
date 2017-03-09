@@ -1,8 +1,8 @@
-class CursorOutOfFileForward(Exception):
+class CursorOutOfRangeForward(Exception):
     pass
 
 
-class CursorOutOfFileBack(Exception):
+class CursorOutOfRangeBack(Exception):
     pass
 
 
@@ -14,25 +14,28 @@ class InvalidSave(Exception):
     pass
 
 
-class InvalidCharacter(Exception):
+class NotCharacter(Exception):
     pass
 
 
 class Cursor:
+    """
+    init class
+    """
     def __init__(self, document):
         self.document = document
         self.position = 0
         
     def forward(self):
-        """move cursor 1 character forward"""
+        """move cursor one character forward"""
         if self.position > len(self.document.string) - 1:
-            raise CursorOutOfFileForward("Cursor out of file")
+            raise CursorOutOfRangeForward("Cursor out of file")
         self.position += 1
 
     def back(self):
-        """move cursor 1 character back"""
+        """move cursor one character back"""
         if self.position == 0:
-            raise CursorOutOfFileBack("Cursor out of file")
+            raise CursorOutOfRangeBack("Cursor out of file")
         self.position -= 1
         
     def home(self):
@@ -52,7 +55,31 @@ class Cursor:
                     ].character != '\n':
             self.position += 1
 
+class Character:
+    def __init__(self, character, bold=False, italic=False, underline=False):
+        assert len(character) == 1
+        self.character = character
+        self.bold = bold
+        self.italic = italic
+        self.underline = underline
+        
+    def __str__(self):
+        """output styling character ('*', '/' or '_')"""
+        bold = "*" if self.bold else ''
+        italic = "/" if self.italic else ''
+        underline = "_" if self.underline else ''
+        return bold + italic + underline + self.character
 
+    def insert(self, character):
+        """if character don't have atribute 'character' - add it'"""
+        if not hasattr(character, 'character'):
+            self.character = Character(character)
+            
+    def __len__(self):
+        """
+        Return len of character
+        """
+        return len(self.character)
 class Document:
     def __init__(self):
         self.characters = []
@@ -63,9 +90,9 @@ class Document:
         self.filename = input(message)
 
     def insert(self, character):
-        """type character to the cursor position"""
+        """add character to the cursor position"""
         if len(character) - 1:
-            raise InvalidCharacter('Can not add more that one character per once')
+            raise NotCharacter('Can not add more that one character')
         self.characters.insert(self.cursor.position,
                                character)
         self.cursor.forward()
@@ -73,11 +100,11 @@ class Document:
     def delete(self):
         """delete character after cursor"""
         if self.cursor.position > len(self.string) - 1:
-            raise InvalidDelete("Can not delete character on this position")
+            raise InvalidDelete("Cursor out of range")
         del self.characters[self.cursor.position]
     
     def save(self):
-        """save document"""
+        """save doc"""
         if not self.filename:
             raise InvalidSave("Can not save file without name")
         f = open(self.filename, 'w')
@@ -86,26 +113,8 @@ class Document:
 
     @property
     def string(self):
-        """show document as string"""
+        """create string"""
         return "".join((str(c) for c in self.characters))
 
 
-class Character:
-    def __init__(self, character, bold=False, italic=False, underline=False):
-        assert len(character) == 1
-        self.character = character
-        self.bold = bold
-        self.italic = italic
-        self.underline = underline
-        
-    def __str__(self):
-        """add decorator ('*', '/' or '_') due to text style"""
-        bold = "*" if self.bold else ''
-        italic = "/" if self.italic else ''
-        underline = "_" if self.underline else ''
-        return bold + italic + underline + self.character
 
-    def insert(self, character):
-        """if character don't have atribute 'character' - add it'"""
-        if not hasattr(character, 'character'):
-            self.character = Character(character)
