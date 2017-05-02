@@ -1,0 +1,15 @@
+#Test module
+import document
+d = document.Document()
+d.insert('h')
+d.insert('e')
+d.insert(document.Character('l', bold=True))
+d.insert(document.Character('l', bold=True))
+d.insert('o')
+d.insert('\n')
+d.insert(document.Character('w', italic=True))
+d.insert(document.Character('o', italic=True))
+d.insert(document.Character('r', underline=True))
+d.insert('l')
+d.insert('d')
+print(d.string)
