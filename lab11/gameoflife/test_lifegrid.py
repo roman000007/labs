@@ -14,12 +14,15 @@ NUM_GENS = 8
 
 def main():
     # Constructs the game grid and configure it.
-    grid = LifeGrid(GRID_WIDTH, GRID_HEIGHT)
+    h = int(input("Enter height of grid: "))
+    w = int(input("Enter width of grid: "))
+    num_gens = int(input("Enter number of generations: "))
+    grid = LifeGrid(w, h)
     grid.configure(INIT_CONFIG)
 
     # Plays the game.
     draw(grid)
-    for i in range(NUM_GENS):
+    for i in range(num_gens):
         evolve(grid)
         draw(grid)
 

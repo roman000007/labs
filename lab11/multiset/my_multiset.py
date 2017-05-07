@@ -1,11 +1,11 @@
-from multiset.myarray import MyArray
+from arrays import Array
 
 class Multiset:
     def __init__(self):
         """
         Produces a newly constructed empty Multiset.
         """
-        self.data = MyArray(100)
+        self.data = Array(100)
         self.firstempty = 0
 
     def empty(self):
