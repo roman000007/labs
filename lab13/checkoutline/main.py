@@ -1,5 +1,5 @@
 
-from marketmodel import MarketModel
+from checkoutline.marketmodel import MarketModel
 
 print("Welcome the Market Simulator")
 lengthOfSimulation = int(input("Enter the total running time: "))

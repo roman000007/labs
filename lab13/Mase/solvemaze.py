@@ -1,5 +1,5 @@
 # Program for building and solving a maze.
-from maze_full import Maze
+from Mase.maze import Maze
 
 # The main routine.
 def main():

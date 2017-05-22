@@ -4,7 +4,7 @@ from lliststack import Stack
 
 class Maze :
     # Define constants to represent contents of the maze cells.
-    MAZE_WALL = " *"
+    MAZE_WALL = "*"
     PATH_TOKEN = "x"
     TRIED_TOKEN = "o"
 
@@ -43,15 +43,38 @@ class Maze :
     # Attempts to solve the maze by finding a path from the starting cell
     # to the exit. Returns True if a path is found and False otherwise.
     def findPath( self ):
-        pass
+        paths = Stack()
+        paths.push(self._startCell)
+        while not paths.isEmpty():
+            currCell = paths.pop()
+            self._markPath(currCell.row, currCell.col)
+            if currCell.row == self._exitCell.row and currCell.col == self._exitCell.col:
+                return True
+            if self._validMove(currCell.row + 1, currCell.col):
+                paths.push(_CellPosition( currCell.row + 1, currCell.col ))
+            if self._validMove(currCell.row - 1, currCell.col):
+                paths.push(_CellPosition(currCell.row - 1, currCell.col))
+            if self._validMove(currCell.row, currCell.col + 1):
+                paths.push(_CellPosition(currCell.row, currCell.col + 1))
+            if self._validMove(currCell.row, currCell.col - 1):
+                paths.push(_CellPosition(currCell.row, currCell.col - 1))
+
+        return False
 
     # Resets the maze by removing all "path" and "tried" tokens.
     def reset( self ):
-        pass
+        for i in range(self.num_rows()):
+            for j in range(self.num_cols()):
+                if self._mazeCells[i, j] == self.TRIED_TOKEN or self._mazeCells[i, j] == self.PATH_TOKEN:
+                    self._mazeCells[i, j] = None
 
     # Prints a text-based representation of the maze.
     def draw( self ):
-        pass
+        for i in range(self.num_rows()):
+            for j in range(self.num_cols()):
+                s = " " if self._mazeCells[i, j] is None else self._mazeCells[i, j]
+                print(s, end="")
+            print()
 
     # Returns True if the given cell position is a valid move.
     def _validMove( self, row, col ):
