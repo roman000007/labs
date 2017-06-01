@@ -39,7 +39,7 @@ class TicketAgent : # Creates a ticket agent object.
         self._stopTime = stopTime
 
 # Indicates the ticket agent has finished helping the passenger.
-def stopService( self ):
-    thePassenger = self._passenger
-    self._passenger = None
-    return thePassenger
+    def stopService( self ):
+        thePassenger = self._passenger
+        self._passenger = None
+        return thePassenger

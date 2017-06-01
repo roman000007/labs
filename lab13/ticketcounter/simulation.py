@@ -2,6 +2,7 @@
 from arrays import Array
 from linkedqueue import LinkedQueue as Queue
 from ticketcounter.simpeople import TicketAgent, Passenger
+from random import random
 
 
 class TicketCounterSimulation :
@@ -25,9 +26,10 @@ class TicketCounterSimulation :
 # Run the simulation using the parameters supplied earlier.
     def run( self ):
         for curTime in range(self._numMinutes + 1) :
-            self._handleArrival( curTime )
+            self._handleArrive( curTime )
             self._handleBeginService( curTime )
             self._handleEndService( curTime )
+        self.printResults()
 
 # Print the simulation results.
     def printResults( self ):
@@ -42,11 +44,27 @@ class TicketCounterSimulation :
 
 # The remaining methods that have yet to be implemented.
     def _handleArrive(self, curTime ): # Handles simulation rule #1.
+        if random() < self._arriveProb:
+            self._numPassengers += 1
+            passenger = Passenger(self._numPassengers, curTime)
+            self._passengerQ.add(passenger)
+            print("Time", str(curTime + 1) + ":", "Passenger", passenger.idNum(), "arrived")
+
 
     def _handleBeginService(self, curTime ): # Handles simulation rule #2.
+        for agent in self._theAgents:
+            if agent.isFree():
+                if not self._passengerQ.isEmpty():
+                    passenger = self._passengerQ.pop()
+                    agent.startService(passenger, curTime + self._serviceTime)
+                    print("Time", str(curTime + 1) + ": Agent", agent.idNum(), "started serving Passenger", passenger.idNum())
 
     def _handleEndService(self,  curTime ): # Handles simulation rule #3.
+        for agent in self._theAgents:
+            if agent.isFinished(curTime):
+                passenger = agent.stopService()
+                print("Time", str(curTime + 1) + ": Agent", agent.idNum(), "stoped serving Passenger", passenger.idNum())
+        self._totalWaitTime += len(self._passengerQ)
 
-
-p = TicketCounterSimulation(3, 3, 5, 6)
+p = TicketCounterSimulation(2, 25, 4, 6)
 p.run()

@@ -47,17 +47,20 @@ class Maze :
         paths.push(self._startCell)
         while not paths.isEmpty():
             currCell = paths.pop()
-            self._markPath(currCell.row, currCell.col)
+            self._markTried(currCell.row, currCell.col)
             if currCell.row == self._exitCell.row and currCell.col == self._exitCell.col:
+                currCell.path.append(currCell)
+                for el in currCell.path:
+                    self._markPath(el.row, el.col)
                 return True
             if self._validMove(currCell.row + 1, currCell.col):
-                paths.push(_CellPosition( currCell.row + 1, currCell.col ))
+                paths.push(_CellPosition( currCell.row + 1, currCell.col, currCell ))
             if self._validMove(currCell.row - 1, currCell.col):
-                paths.push(_CellPosition(currCell.row - 1, currCell.col))
+                paths.push(_CellPosition(currCell.row - 1, currCell.col, currCell))
             if self._validMove(currCell.row, currCell.col + 1):
-                paths.push(_CellPosition(currCell.row, currCell.col + 1))
+                paths.push(_CellPosition(currCell.row, currCell.col + 1, currCell))
             if self._validMove(currCell.row, currCell.col - 1):
-                paths.push(_CellPosition(currCell.row, currCell.col - 1))
+                paths.push(_CellPosition(currCell.row, currCell.col - 1, currCell))
 
         return False
 
@@ -96,6 +99,9 @@ class Maze :
 
 # Private storage class for holding a cell position.
 class _CellPosition( object ):
-    def __init__( self, row, col ):
+    path = []
+    def __init__( self, row, col, new_node = None ):
         self.row = row
         self.col = col
+        if new_node is not None:
+            self.path.append(new_node)
